@@ -86,7 +86,6 @@ You can change the name of the variables, but make sure to make the change in co
 ## 🔗 Links
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/grecu-ionu%C8%9B-c%C4%83t%C4%83lin-b54730261/)
-[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/rootblind)
 
 
 ## Support
