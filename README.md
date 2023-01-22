@@ -85,7 +85,7 @@ You can change the name of the variables, but make sure to make the change in co
 
 ## 🔗 Links
 
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/grecu-ionu%C8%9B-c%C4%83t%C4%83lin-b54730261/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](www.linkedin.com/in/grecu-ionut-catalin)
 
 
 ## Support
