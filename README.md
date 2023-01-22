@@ -7,7 +7,6 @@
 
 ![Logo](https://i.ibb.co/xG8Nv30/Lain-Discord-Bot.png)
 
-![](https://img.shields.io/node/v/discord.js)
 ## Key modules
 
 - Moderation
