@@ -1,4 +1,4 @@
-const {Message, Client, SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
+const {Message, Client, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require('discord.js');
 const sqlite = require('sqlite3').verbose();
 
 module.exports = {
@@ -25,6 +25,11 @@ module.exports = {
         const {channel, options} = interaction;
 
         const welcomeChannel = options.getChannel('channel');
+        if(welcomeChannel.type != 0)
+        {
+            interaction.reply('You must provide a text channel!');
+            return;
+        }
         const welcomeTitle = options.getString('welcome-message-title');
         const welcomeMessage = options.getString('welcome-message');
         if(!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages))
@@ -54,7 +59,14 @@ module.exports = {
             });//if the row exists, means the welcomeScheme for the specific guild already exists, so we update it, else we insert new row
         });
             
-        interaction.reply({content: 'The welcome message has been set', ephemeral: true});
-        
+        await interaction.reply({content: 'The welcome message has been set. This is a preview:', ephemeral: true});
+        const welcomeEmbed = new EmbedBuilder()
+            .setAuthor({name: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL()})
+            .setTitle(welcomeTitle)
+            .setDescription(welcomeMessage)
+            .setColor(0x00001)
+            .setTimestamp()
+            .setFooter({text:`ID: ${interaction.user.id}`});
+        await interaction.followUp({embeds: [welcomeEmbed], ephemeral: true});
     }
 }

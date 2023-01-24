@@ -6,6 +6,7 @@ const {REST} = require('@discordjs/rest');
 //user files
 const {loadEvents} = require('../Handlers/eventHandler');
 const { loadCommands } = require('../Handlers/commandHandler');
+const { handleLogs } = require('../Handlers/handlerLogs.js')
 
 config();
 
@@ -39,6 +40,7 @@ async function main()
         client.login(TOKEN).then(() => {
             loadEvents(client);
             loadCommands(client);
+            handleLogs(client);
         });
     }catch(err)
     {

@@ -24,6 +24,16 @@ module.exports = {
                 console.error(err);
         });
 
+        //preference Channels
+        sql = `CREATE TABLE IF NOT EXISTS prefChannelsScheme(ID INTEGER PRIMARY KEY, Guild TEXT, ModLogs TEXT, VoiceLogs TEXT, MembersActivityLogs TEXT)`;
+        db.run(sql, [], (err) => {
+            if(err)
+                console.error(err);
+        });
+
+
+
+
         interaction.reply({content:'The default tables have been set in database.', ephemeral: true});
         db.close();
     }

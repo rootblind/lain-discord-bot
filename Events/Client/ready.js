@@ -1,6 +1,5 @@
 const {Client} = require('discord.js');
-const mongoose = require('mongoose');
-const laindb = process.env.LAIN_MDB;
+
 module.exports = {
     name: "ready",
     once: true,
