@@ -1,0 +1,86 @@
+const {Message, Client, SlashCommandBuilder, EmbedBuilder,PermissionFlagsBits} = require('discord.js');
+const { options, voice } = require('../../lain-main');
+const sqlite = require('sqlite3').verbose();
+
+module.exports = {
+    data: new SlashCommandBuilder()
+    .setName('set-logs')
+    .setDescription('Set the desired channels to post the logs.')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+    .addChannelOption(option =>
+        option.setName('mod-logs')
+        .setDescription('The channel to log the moderation activity.')
+        )
+    .addChannelOption(option =>
+        option.setName('voice-logs')
+        .setDescription('The channel to log voice channels activity')
+        )
+    .addChannelOption(option =>
+        option.setName('members-logs')
+        .setDescription('The channel to log members activity')
+        )
+    ,
+    async execute(interaction)
+    {
+        const {guild, channel, options} = interaction;
+        let modLogChannel = options.getChannel('mod-logs') || null;
+        let voiceLogChannel = options.getChannel('voice-logs') || null;
+        let membersLogChannel = options.getChannel('members-logs') || null;
+        if(modLogChannel !== null && modLogChannel.type != 0 || voiceLogChannel !== null && voiceLogChannel.type != 0 || membersLogChannel !== null && membersLogChannel.type != 0)
+        {
+            await interaction.reply({content: 'All the parameters provided must be text channels!', emphemeral: true});
+            return;
+        }
+        const db = new sqlite.Database('./source/lain-database.db', (err) => {
+            if(err) console.error(err);
+        });
+
+        db.get(`SELECT * FROM prefChannelsScheme WHERE Guild= '${interaction.guild.id}'`, (err, row) => {
+            if(err) console.error(err);
+            if(row !== undefined)
+            {
+                    //db.run(`UPDATE prefChannelsScheme SET ModLogs = ? WHERE Guild = ?`, [
+                if(modLogChannel !== null)
+                    db.run(`UPDATE prefChannelsScheme SET ModLogs = ? WHERE Guild = ?`, [modLogChannel.id, interaction.guild.id],
+                    (err) => { if(err) console.error(err);});
+                if(voiceLogChannel !== null)
+                    db.run(`UPDATE prefChannelsScheme SET VoiceLogs = ? WHERE Guild = ?`, [voiceLogChannel.id, interaction.guild.id],
+                        (err) => { if(err) console.error(err);});
+                if(membersLogChannel !== null)
+                    db.run(`UPDATE prefChannelsScheme SET MembersActivityLogs = ? WHERE Guild = ?`, [membersLogChannel.id, interaction.guild.id],
+                        (err) => { if(err) console.error(err);});
+            }
+            else
+                {
+                    if(modLogChannel !== null)
+                        db.run(`INSERT INTO prefChannelsScheme(Guild, ModLogs) VALUES (?, ?)`, [interaction.guild.id, modLogChannel.id],
+                        (err) => { if(err) console.error(err);});
+                    if(voiceLogChannel !== null)
+                        db.run(`INSERT INTO prefChannelsScheme(Guild, VoiceLogs) VALUES (?, ?)`, [interaction.guild.id, voiceLogChannel.id],
+                            (err) => { if(err) console.error(err);});
+                    if(membersLogChannel !== null)
+                        db.run(`INSERT INTO prefChannelsScheme(Guild, MembersActivityLogs) VALUES (?, ?)`, [interaction.guild.id, membersLogChannel.id],
+                            (err) => { if(err) console.error(err);});
+                }
+        });
+        
+        const ModEmbed = new EmbedBuilder()
+            .setDescription(`Moderation logs are set to ${modLogChannel}`);
+        const VoiceEmbed = new EmbedBuilder()
+            .setDescription(`Voice logs are set to ${voiceLogChannel}`);
+        const MemberAcEmbed = new EmbedBuilder()
+            .setDescription(`Members activity logs are set to ${membersLogChannel}`)
+        let response = [];
+        if(modLogChannel)
+            response.push(ModEmbed);
+        if(voiceLogChannel)
+            response.push(VoiceEmbed);
+        if(membersLogChannel)
+            response.push(MemberAcEmbed);
+        
+        if(response.length)
+            await interaction.reply({embeds: response, emphemeral: true});
+        else
+            await interaction.reply({content: `No input provided!`, emphemeral: true});
+    }
+}
