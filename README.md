@@ -40,6 +40,8 @@ Use Nodejs to run the bot
   node ./source/lain-main.js
 ```
 
+It is important to note that, as the bot Owner, you should run the /default-database command.
+
 
 ## Get the latest Nodejs version from here:
 [Click](https://nodejs.org/en/)
