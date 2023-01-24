@@ -18,7 +18,6 @@ module.exports = {
             let channel = row.Channel;
             let theTitle = row.Title || " ";
             let Msg = row.Msg || " ";
-            Msg = `${member.user.tag}  ` + Msg;
             const {user, guild} = member;
             const welcomeChannel = member.guild.channels.cache.get(channel);
             

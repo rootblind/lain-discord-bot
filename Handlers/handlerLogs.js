@@ -69,13 +69,12 @@ function handleLogs(client)
     });
 
     client.on("messageUpdate", (oldMessage, newMessage) => {
-
         const embed = new EmbedBuilder()
             .setTitle('Message Edited')
             .setColor('Grey')
             .setDescription(`Message Edited from \`${oldMessage.content}\` to \`${newMessage.content}\` by ${newMessage.author.tag}`);
 
-        return send_log_data(newMessage.guildId, embed, 2);
+        return send_log_data(newMessage.guild.id, embed, 2);
 
     });
 
