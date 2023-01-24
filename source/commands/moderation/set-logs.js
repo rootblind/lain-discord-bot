@@ -37,31 +37,21 @@ module.exports = {
 
         db.get(`SELECT * FROM prefChannelsScheme WHERE Guild= '${interaction.guild.id}'`, (err, row) => {
             if(err) console.error(err);
-            if(row !== undefined)
+            if(row === undefined)
             {
-                    //db.run(`UPDATE prefChannelsScheme SET ModLogs = ? WHERE Guild = ?`, [
-                if(modLogChannel !== null)
+                db.run(`INSERT INTO prefChannelsScheme(Guild) VALUES (?)`, [interaction.guild.id], 
+                    (err) => { if(err) console.error(err);});
+            }
+            if(modLogChannel !== null)
                     db.run(`UPDATE prefChannelsScheme SET ModLogs = ? WHERE Guild = ?`, [modLogChannel.id, interaction.guild.id],
                     (err) => { if(err) console.error(err);});
-                if(voiceLogChannel !== null)
+            if(voiceLogChannel !== null)
                     db.run(`UPDATE prefChannelsScheme SET VoiceLogs = ? WHERE Guild = ?`, [voiceLogChannel.id, interaction.guild.id],
                         (err) => { if(err) console.error(err);});
-                if(membersLogChannel !== null)
+            if(membersLogChannel !== null)
                     db.run(`UPDATE prefChannelsScheme SET MembersActivityLogs = ? WHERE Guild = ?`, [membersLogChannel.id, interaction.guild.id],
                         (err) => { if(err) console.error(err);});
-            }
-            else
-                {
-                    if(modLogChannel !== null)
-                        db.run(`INSERT INTO prefChannelsScheme(Guild, ModLogs) VALUES (?, ?)`, [interaction.guild.id, modLogChannel.id],
-                        (err) => { if(err) console.error(err);});
-                    if(voiceLogChannel !== null)
-                        db.run(`INSERT INTO prefChannelsScheme(Guild, VoiceLogs) VALUES (?, ?)`, [interaction.guild.id, voiceLogChannel.id],
-                            (err) => { if(err) console.error(err);});
-                    if(membersLogChannel !== null)
-                        db.run(`INSERT INTO prefChannelsScheme(Guild, MembersActivityLogs) VALUES (?, ?)`, [interaction.guild.id, membersLogChannel.id],
-                            (err) => { if(err) console.error(err);});
-                }
+           
         });
         
         const ModEmbed = new EmbedBuilder()
