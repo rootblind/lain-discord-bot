@@ -30,7 +30,7 @@ module.exports = {
                 .setColor(0x5fb040)
                 .setTimestamp();
             await interaction.reply(
-                { embeds: [embed] }
+                { embeds: [embed]}
             );
         } catch (err) {
             console.error(err);

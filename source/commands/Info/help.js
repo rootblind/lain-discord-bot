@@ -18,6 +18,7 @@ module.exports = {
             info: "📚",
             moderation: "🔨",
             miscellaneous: "👻",
+            setup: "🌍",
 
         }
         const directories = [

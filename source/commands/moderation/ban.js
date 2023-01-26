@@ -5,6 +5,8 @@ const {
 
 } = require('discord.js');
 
+const sqlite = require('sqlite3').verbose();
+
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('ban')
@@ -52,26 +54,35 @@ module.exports = {
         const errEmbed = new EmbedBuilder()
         .setDescription(`You can't take action on ${user.username}!`)
         .setColor(0xc72c3a);
-
-        if(member.permissions.has([PermissionFlagsBits.BanMembers]))
-        {
-            return interaction.reply({embeds: [errEmbed], emphemeral: true});
-        }
+        const db = new sqlite.Database('./source/lain-database.db', (err) => { if(err) console.error(err);});
         
-        try {
-            await member.ban({deleteMessageSeconds: delDays, reason: reason});
-        } catch (error) {
-            console.log(error);
-            interaction.reply({embeds: [errEmbed], emphemeral: true});
-        }
-
-        const embedBan = new EmbedBuilder()
-            .setDescription(`Successfully banned ${user} for the reason: ${reason}`)
-            .setColor(0x5fb040)
-            .setTimestamp()
-        
-        await interaction.reply({
-            embeds: [embedBan]
+        db.get(`SELECT * FROM dedicatedRolesScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
+            if(err) console.error(err);
+            let exceptions = [];
+            if(row.Staff)
+                exceptions.push(row.Staff);
+            if(row.Exception)
+                exceptions.push(row.Exception);
+            
+            if(member.permissions.has([PermissionFlagsBits.BanMembers]) || member.roles.cache.some(role => exceptions.includes(role.name)))
+            {
+                return interaction.reply({embeds: [errEmbed], emphemeral: true});
+            }
+            try {
+                member.ban({deleteMessageSeconds: delDays, reason: reason});
+            } catch (error) {
+                console.log(error);
+                interaction.reply({embeds: [errEmbed], emphemeral: true});
+            }
+    
+            const embedBan = new EmbedBuilder()
+                .setDescription(`Successfully banned ${user} for the reason: ${reason}`)
+                .setColor(0x5fb040)
+                .setTimestamp()
+            
+            interaction.reply({
+                embeds: [embedBan]
+            });
         });
     }
 }

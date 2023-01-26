@@ -38,7 +38,7 @@ function handleLogs(client)
         });
     }
 
-    client.on("messageDelete", function (message) {
+    client.on("messageDelete", function (message) {//deleting the message manually
         if (message.author.bot) return;
 
         const embed = new EmbedBuilder()
@@ -56,8 +56,8 @@ function handleLogs(client)
 
 
 
-    client.on("guildMemberRemove", (member) => {
-
+    client.on("guildMemberRemove", (member) => {//member left the server
+        if (member.user.bot) return;
         const embed = new EmbedBuilder()
             .setTitle('User Left')
             .setColor('Red')
@@ -68,7 +68,8 @@ function handleLogs(client)
 
     });
 
-    client.on("messageUpdate", (oldMessage, newMessage) => {
+    client.on("messageUpdate", (oldMessage, newMessage) => {//edit message
+        if (oldMessage.author.bot) return;
         const embed = new EmbedBuilder()
             .setTitle('Message Edited')
             .setColor('Grey')
@@ -78,8 +79,8 @@ function handleLogs(client)
 
     });
 
-    client.on("voiceStateUpdate", (oldState, newState) => {
-        if(newState.channel === null)
+    client.on("voiceStateUpdate", (oldState, newState) => {// joining/moving through voices
+        if(newState.channel === null || newState.member.user.bot)
             return;
         const embed = new EmbedBuilder()
             .setTitle('Voice Channel Joined')
@@ -87,6 +88,53 @@ function handleLogs(client)
             .setDescription(newState.member.user.tag + " joined " + `**${newState.channel.name}**` + "!");
 
         return send_log_data(newState.member.guild.id, embed, 1);
+    });
+
+    client.on('guildMemberUpdate', (oldMember, newMember) => {//event on nitro boosting the server
+        if(oldMember.user.bot) return;
+        if(newMember.roles.cache.some(role => role.name === 'Nitro Booster'))
+        {
+            const embed = new EmbedBuilder()
+                .setTitle(`${newMember.user.tag} is boosting the server!`)
+                .setColor(0xff00ff)
+                .setDescription(`${newMember.user.tag} has been given the roles for boosting the server!`)
+            return send_log_data(newMember.guild.id, embed, 2);
+        }
+        else if(oldMember.roles.cache.some(role => role.name === 'Nitro Booster') && !newMember.roles.cache.some(role => role.name === 'X'))
+        {
+            const embed = new EmbedBuilder()
+                .setTitle(`${newMember.user.tag} is no longer boosting the server!`)
+                .setColor(0x7f007f)
+                .setDescription(`The event actions have been taken.`)
+            return send_log_data(newMember.guild.id, embed, 2);
+        }
+        return;
+       
+    });
+    // User Banned
+    client.on("guildBanAdd", ({guild, user}) => {
+
+            const embed = new EmbedBuilder()
+                .setTitle('User Banned')
+                .setColor('Red')
+                .setDescription(`User: ${user} (\`${user.id}\`)\n\`${user.tag}\``,
+                    user.displayAvatarURL({ dynamic: true }));
+    
+            return send_log_data(guild.id, embed, 0);
+    
+    });
+    
+    // User Unbanned
+    client.on("guildBanRemove", ({guild, user}) => {
+    
+            const embed = new EmbedBuilder()
+                .setTitle('User Unbanned')
+                .setColor('Green')
+                .setDescription(`User: ${user} (\`${user.id}\`)\n\`${user.tag}\``,
+                    user.displayAvatarURL({ dynamic: true }));
+    
+            return send_log_data(guild.id, embed, 0);
+    
     });
 
 }

@@ -14,7 +14,7 @@ module.exports = {
         db.get(`SELECT * FROM welcomeScheme WHERE Guild = '${member.guild.id}'`, (err, row) => {
             if(err) console.error(err);
             if(row === undefined) return;
-
+            if(row.Status != "enable") return;
             let channel = row.Channel;
             let theTitle = row.Title || " ";
             let Msg = row.Msg || " ";
