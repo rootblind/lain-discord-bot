@@ -1,4 +1,4 @@
-const {Message, Client, SlashCommandBuilder, EmbedBuilder,PermissionFlagsBits} = require('discord.js');
+const {Message, Client, SlashCommandBuilder, EmbedBuilder,PermissionFlagsBits, Embed} = require('discord.js');
 const { options, voice } = require('../../lain-main');
 const sqlite = require('sqlite3').verbose();
 
@@ -59,7 +59,7 @@ module.exports = {
         const VoiceEmbed = new EmbedBuilder()
             .setDescription(`Voice logs are set to ${voiceLogChannel}`);
         const MemberAcEmbed = new EmbedBuilder()
-            .setDescription(`Members activity logs are set to ${membersLogChannel}`)
+            .setDescription(`Members activity logs are set to ${membersLogChannel}`);
         let response = [];
         if(modLogChannel)
             response.push(ModEmbed);
@@ -71,6 +71,13 @@ module.exports = {
         if(response.length)
             await interaction.reply({embeds: response, emphemeral: true});
         else
-            await interaction.reply({content: `No input provided!`, emphemeral: true});
+        {
+            const removeEmbed = new EmbedBuilder()
+                .setDescription(`Logs have been disabled. No channel provided!`);
+            db.run(`UPDATE prefChannelsScheme SET ModLogs = ?, VoiceLogs = ?, MembersActivityLogs = ? WHERE Guild = ?`, [
+                null, null, null, interaction.guild.id
+            ], (err) => {if(err) console.error(err);});
+            await interaction.reply({embeds: [removeEmbed], emphemeral: true});
+        }
     }
 }

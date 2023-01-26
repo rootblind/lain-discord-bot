@@ -23,7 +23,7 @@ module.exports = {
         const target = options.getUser('target');
 
         const messages = await channel.messages.fetch({
-            limit: amount +1,
+            limit: amount + 1,
         });
         const res = new EmbedBuilder()
             .setColor(0x930cbf)

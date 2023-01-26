@@ -18,7 +18,7 @@ module.exports = {
             if(err) console.error(err);
         });
         //welcomeScheme table for set-welcome-message.js
-        let sql = `CREATE TABLE IF NOT EXISTS welcomeScheme(ID INTEGER PRIMARY KEY, Guild TEXT, Channel TEXT, Title, Msg TEXT)`;
+        let sql = `CREATE TABLE IF NOT EXISTS welcomeScheme(ID INTEGER PRIMARY KEY, Guild TEXT, Channel TEXT, Title Text, Msg TEXT, Status Text)`;
         db.run(sql, [], (err) => {
             if(err)
                 console.error(err);
@@ -31,6 +31,12 @@ module.exports = {
                 console.error(err);
         });
 
+        //dedicated roles
+        sql = `CREATE TABLE IF NOT EXISTS dedicatedRolesScheme(ID INTEGER PRIMARY KEY, Guild Text, Staff Text, Exception Text, Premium Text)`;
+        db.run(sql, [], (err) => {
+            if(err)
+                console.error(err);
+        });
 
 
 

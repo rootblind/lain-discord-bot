@@ -3,7 +3,7 @@ const sqlite = require('sqlite3').verbose();
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('set-welcome-message')
+    .setName('set-welcome-event')
     .setDescription('Set up the welcome message')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addChannelOption(option =>
@@ -19,7 +19,16 @@ module.exports = {
         option.setName('welcome-message')
         .setDescription('Your welcoming message.')
         .setRequired(true)
-    ),
+    )
+    .addStringOption(option =>
+        option.setName(`switch`)
+            .setDescription('Enable or disable the welcome event.')
+            .setRequired(true)
+            .addChoices(
+            { name: "Enable", value: "enable" },
+            { name: "Disable", value: "disable" }
+            )
+        ),
     async execute(interaction)
     {
         const {channel, options} = interaction;
@@ -32,6 +41,7 @@ module.exports = {
         }
         const welcomeTitle = options.getString('welcome-message-title');
         const welcomeMessage = options.getString('welcome-message');
+        const welcomeSwitch = options.getString('switch');
         if(!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages))
             interaction.reply({content:'Lacking SendMessages permission.', ephemeral: true});
         
@@ -42,24 +52,26 @@ module.exports = {
             db.get(`SELECT * FROM welcomeScheme WHERE Guild='${interaction.guild.id}'`, (err, row) => {
                 if(err) console.error(err);
                 if(row !== undefined)
-                    db.run(`UPDATE welcomeScheme SET Channel = ?, Title = ?, Msg = ? WHERE Guild = ?`, [
+                    db.run(`UPDATE welcomeScheme SET Channel = ?, Title = ?, Msg = ?, Status = ? WHERE Guild = ?`, [
                         welcomeChannel.id,
                         welcomeTitle,
                         welcomeMessage,
+                        welcomeSwitch,
                         interaction.guild.id
                     ],
                         (err) => { if(err) console.error(err); });
                 else
-                    db.run(`INSERT INTO welcomeScheme(Guild, Channel, Title, Msg) VALUES (?, ?, ?, ?)`, [
+                    db.run(`INSERT INTO welcomeScheme(Guild, Channel, Title, Msg, Status) VALUES (?, ?, ?, ?, ?)`, [
                         interaction.guild.id,
                         welcomeChannel.id,
                         welcomeTitle,
-                        welcomeMessage
+                        welcomeMessage,
+                        welcomeSwitch,
                     ], (err) => { if(err) console.error(err);});
             });//if the row exists, means the welcomeScheme for the specific guild already exists, so we update it, else we insert new row
         });
             
-        await interaction.reply({content: 'The welcome message has been set. This is a preview:', ephemeral: true});
+        await interaction.reply({content: `The welcome message has been set. Status ${welcomeSwitch}. This is a preview:`, ephemeral: true});
         const welcomeEmbed = new EmbedBuilder()
             .setAuthor({name: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL()})
             .setTitle(welcomeTitle)
