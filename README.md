@@ -97,7 +97,7 @@ For support, you can find me on discord: Blind#1115
 A support discord server will be coming soon.
 
 
-##If you want to support me
+## If you want to support me
 
 If you find this project or my work useful or interesting to you, please consider supporting me.
 
