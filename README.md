@@ -93,5 +93,14 @@ You can change the name of the variables, but make sure to make the change in co
 ## Ask for Support
 
 For support, you can find me on discord: Blind#1115
+
 A support discord server will be coming soon.
 
+
+##If you want to support me
+
+If you find this project or my work useful or interesting to you, please consider supporting me.
+
+You can do that by [donating](https://www.paypal.com/paypalme/kassgar), offering some tips to improve my skills or
+
+using Lain Bot without removing or modifying the /about-me command.
