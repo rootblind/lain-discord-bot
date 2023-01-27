@@ -90,7 +90,7 @@ You can change the name of the variables, but make sure to make the change in co
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](www.linkedin.com/in/grecu-ionut-catalin)
 
 
-## Support
+## Ask for Support
 
 For support, you can find me on discord: Blind#1115
 A support discord server will be coming soon.
