@@ -19,6 +19,7 @@ module.exports = {
             moderation: "🔨",
             miscellaneous: "👻",
             setup: "🌍",
+            premium: "👑",
 
         }
         const directories = [

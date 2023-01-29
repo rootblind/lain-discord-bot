@@ -1,5 +1,5 @@
 const {Message, Client, SlashCommandBuilder, EmbedBuilder,PermissionFlagsBits, Embed} = require('discord.js');
-const { options, voice } = require('../../lain-main');
+
 const sqlite = require('sqlite3').verbose();
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
         let membersLogChannel = options.getChannel('members-logs') || null;
         if(modLogChannel !== null && modLogChannel.type != 0 || voiceLogChannel !== null && voiceLogChannel.type != 0 || membersLogChannel !== null && membersLogChannel.type != 0)
         {
-            await interaction.reply({content: 'All the parameters provided must be text channels!', emphemeral: true});
+            await interaction.reply({content: 'All the parameters provided must be text channels!', ephemeral: true});
             return;
         }
         const db = new sqlite.Database('./source/lain-database.db', (err) => {
@@ -69,7 +69,7 @@ module.exports = {
             response.push(MemberAcEmbed);
         
         if(response.length)
-            await interaction.reply({embeds: response, emphemeral: true});
+            await interaction.reply({embeds: response, ephemeral: true});
         else
         {
             const removeEmbed = new EmbedBuilder()
@@ -77,7 +77,7 @@ module.exports = {
             db.run(`UPDATE prefChannelsScheme SET ModLogs = ?, VoiceLogs = ?, MembersActivityLogs = ? WHERE Guild = ?`, [
                 null, null, null, interaction.guild.id
             ], (err) => {if(err) console.error(err);});
-            await interaction.reply({embeds: [removeEmbed], emphemeral: true});
+            await interaction.reply({embeds: [removeEmbed], ephemeral: true});
         }
     }
 }
