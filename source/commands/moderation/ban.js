@@ -56,16 +56,26 @@ module.exports = {
 
             return await interaction.reply({embeds: [noMemberEmbed], ephemeral: true});
         }
-            
-        
 
         const errEmbed = new EmbedBuilder()
         .setDescription(`You can't take action on ${user.username}!`)
         .setColor(0xc72c3a);
+
+        if(member.roles.highest.position >= interaction.member.roles.highest.position)
+            return interaction.reply({embeds: [errEmbed], ephemeral: true});
+    
         const db = new sqlite.Database('./source/lain-database.db', (err) => { if(err) console.error(err);});
         
         db.get(`SELECT * FROM dedicatedRolesScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
             if(err) console.error(err);
+            if(row === undefined)
+            {
+                const critical = new EmbedBuilder()
+                    .setTitle('CRITICAL ERROR!')
+                    .setDescription('Use \`/server-setup\` or ask an admin to do, or some commands will not work!');
+                interaction.reply({embeds: [critical], ephemeral: true});
+                return;
+            }
             let exceptions = [];
             if(row.Staff)
                 exceptions.push(row.Staff);
@@ -80,7 +90,7 @@ module.exports = {
                 member.ban({deleteMessageSeconds: delDays, reason: reason});
             } catch (error) {
                 console.log(error);
-                interaction.reply({embeds: [errEmbed], ephemeral: true});
+                return interaction.reply({embeds: [errEmbed], ephemeral: true});
             }
     
             const embedBan = new EmbedBuilder()
@@ -89,7 +99,15 @@ module.exports = {
                 .setTimestamp()
             db.get(`SELECT * FROM prefChannelsScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
                 if(err) console.error(err);
-                if(row === undefined) return;
+                if(row === undefined)
+                {
+                    const critical = new EmbedBuilder()
+                        .setTitle('CRITICAL ERROR!')
+                        .setDescription('Use \`/server-setup\` or ask an admin to do, or some commands will not work!');
+                    interaction.reply({embeds: [critical], ephemeral: true});
+                    return;
+                }
+            if(!row.ModLogs) return;
 
                 let channelLog = interaction.guild.channels.cache.get(row.ModLogs);
                 const logEmbed = new EmbedBuilder()
