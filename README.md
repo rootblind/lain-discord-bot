@@ -94,7 +94,7 @@ You can change the name of the variables, but make sure to make the change in co
 
 For support, you can find me on discord: Blind#1115
 
-A support discord server will be coming soon.
+Or [join this discord server](https://discord.gg/ZWJFsWF72b)
 
 
 ## If you want to support me
