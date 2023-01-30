@@ -8,7 +8,7 @@ module.exports = {
     execute(interaction, client)
     {
         
-        interaction.reply({content: `🏓 Pong! Latency is ${Math.round(client.ws.ping)}ms`, ephermal: true});
+        interaction.reply({content: `🏓 Pong! Latency is ${Math.round(client.ws.ping)}ms`, ephemeral: true});
     }
 ,    
     

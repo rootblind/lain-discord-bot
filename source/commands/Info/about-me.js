@@ -51,10 +51,10 @@ module.exports = {
                     .setURL('https://github.com/rootblind')
                     .setColor('Blue')
                     .setDescription(
-                        `Hi, I am the one developing Lain bot. A programming entusiast and computer nerd.
+                        `Hi, I am the one developing Lain bot. A programming enthusiast and computer nerd.
                         Not that much to say about me, I'm not really a "people person".
                         I would like to ask you to look over my work by clicking the title hyperlink.
-                        Most of my projects and free and open source and I plan in coding even more and more challenging ones that you can use as applications or as base code for your own projects.
+                        Most of my projects and free and open source and I plan about coding even more and more challenging ones that you can use as applications or as base code for your own projects.
                         If you wish to discuss with me about my work or any other topic, feel free to contact me via discord or join the server I made for offering support and chatting.
                         Here: **https://discord.gg/ZWJFsWF72b**`
                     );

@@ -37,6 +37,14 @@ module.exports = {
         const user = options.getUser('target');
         const reason = options.getString('reason') || 'No reason provided.';
         const delDays = options.getString('delete-messages') || '0';
+        if(reason.length > 255)
+        {
+            const ed = new EmbedBuilder()
+                .setDescription('The reason length is too high!')
+                .setColor('Red');
+            return await interaction.reply({embeds: [ed], ephemeral: true});
+        }
+
         let member;
         try{
             member  = await interaction.guild.members.fetch(user.id);
@@ -46,7 +54,7 @@ module.exports = {
             .setDescription('The specified ID is either invalid or not on the server!')
             .setColor(0xc72c3a);
 
-            interaction.reply({embeds: [noMemberEmbed], emphemeral: true});
+            return await interaction.reply({embeds: [noMemberEmbed], ephemeral: true});
         }
             
         
@@ -66,20 +74,33 @@ module.exports = {
             
             if(member.permissions.has([PermissionFlagsBits.BanMembers]) || member.roles.cache.some(role => exceptions.includes(role.name)))
             {
-                return interaction.reply({embeds: [errEmbed], emphemeral: true});
+                return interaction.reply({embeds: [errEmbed], ephemeral: true});
             }
             try {
                 member.ban({deleteMessageSeconds: delDays, reason: reason});
             } catch (error) {
                 console.log(error);
-                interaction.reply({embeds: [errEmbed], emphemeral: true});
+                interaction.reply({embeds: [errEmbed], ephemeral: true});
             }
     
             const embedBan = new EmbedBuilder()
                 .setDescription(`Successfully banned ${user} for the reason: ${reason}`)
                 .setColor(0x5fb040)
                 .setTimestamp()
-            
+            db.get(`SELECT * FROM prefChannelsScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
+                if(err) console.error(err);
+                if(row === undefined) return;
+
+                let channelLog = interaction.guild.channels.cache.get(row.ModLogs);
+                const logEmbed = new EmbedBuilder()
+                    .setColor(`Red`)
+                    .setTitle('User Banned')
+                    .setDescription(`**Member:** ${member.user.tag} (${member.user.id})\n**Moderator:** ${interaction.user.tag} (${interaction.user.id})\n**Reason:** ${reason}`)
+                    .setTimestamp()
+                    .setThumbnail(member.user.displayAvatarURL());
+                channelLog.send({embeds: [logEmbed]});
+
+            });
             interaction.reply({
                 embeds: [embedBan]
             });

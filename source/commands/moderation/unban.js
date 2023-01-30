@@ -4,7 +4,7 @@ const {
     PermissionFlagsBits,
 
 } = require('discord.js');
-
+const sqlite = require('sqlite3').verbose();
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,24 +21,35 @@ module.exports = {
     {
         const {channel, options} = interaction;
         const userId = options.getString('user-id');
+        const embed = new EmbedBuilder()
+            .setDescription(`Successfully unbanned the user with id ${userId} .`)
+            .setColor(0x5fb040)
+            .setTimestamp();
+        const errEmbed = new EmbedBuilder()
+            .setDescription('The targeted ID is either invalid or not from a banned user.')
+            .setColor(0xc72c3b);
+
+        const db = new sqlite.Database('./source/lain-database.db', (err) => { if(err) console.error(err);});
 
         try {
             await interaction.guild.members.unban(userId);
-
-            const embed = new EmbedBuilder()
-                .setDescription(`Successfully unbanned the user with id ${userId} .`)
-                .setColor(0x5fb040)
-                .setTimestamp();
-            await interaction.reply(
-                { embeds: [embed]}
-            );
+            await interaction.reply({ embeds: [embed]});
         } catch (err) {
-            console.error(err);
-            const errEmbed = new EmbedBuilder()
-                .setDescription('The targeted ID is either invalid or not from a banned user.')
-                .setColor(0xc72c3b);
-            
-            interaction.reply({embed: [errEmbed], ephemeral: true});
+            return await interaction.reply({embeds: [errEmbed], ephemeral: true});
         }
+
+        db.get(`SELECT * FROM prefChannelsScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
+            if(err) console.error(err);
+            if(row === undefined) return;
+
+            let channelLog = interaction.guild.channels.cache.get(row.ModLogs);
+            const logEmbed = new EmbedBuilder()
+                .setColor(`Green`)
+                .setTitle('User Unbanned')
+                .setDescription(`**Member ID:** ${userId}\n**Moderator:** ${interaction.user.tag} (${interaction.user.id})`)
+                .setTimestamp();
+            channelLog.send({embeds: [logEmbed]});
+
+        });
     }
 }

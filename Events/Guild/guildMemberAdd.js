@@ -25,6 +25,7 @@ module.exports = {
             .setAuthor({name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL()})
             .setTitle(theTitle)
             .setDescription(Msg)
+            .setThumbnail(member.guild.iconURL())
             .setColor(0x00001)
             .setTimestamp()
             .setFooter({text:`ID: ${member.id}`});
