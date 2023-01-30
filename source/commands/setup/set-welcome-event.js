@@ -44,7 +44,13 @@ module.exports = {
         const welcomeSwitch = options.getString('switch');
         if(!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages))
             interaction.reply({content:'Lacking SendMessages permission.', ephemeral: true});
-        
+        if(welcomeTitle.length > 255)
+            {
+                const ed = new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('The title is too long! (255)');
+                return await interaction.reply({embeds: [ed], ephemeral});
+            }
         const db = new sqlite.Database('./source/lain-database.db', (err) => {
             if(err) console.error(err);
         });

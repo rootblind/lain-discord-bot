@@ -112,31 +112,9 @@ function handleLogs(client)
        
     });
     // User Banned
-    client.on("guildBanAdd", ({guild, user}) => {
-
-            const embed = new EmbedBuilder()
-                .setTitle('User Banned')
-                .setColor('Red')
-                .setDescription(`User: ${user} (\`${user.id}\`)\n\`${user.tag}\``,
-                    user.displayAvatarURL({ dynamic: true }));
-    
-            return send_log_data(guild.id, embed, 0);
-    
-    });
-    
     // User Unbanned
-    client.on("guildBanRemove", ({guild, user}) => {
-    
-            const embed = new EmbedBuilder()
-                .setTitle('User Unbanned')
-                .setColor('Green')
-                .setDescription(`User: ${user} (\`${user.id}\`)\n\`${user.tag}\``,
-                    user.displayAvatarURL({ dynamic: true }));
-    
-            return send_log_data(guild.id, embed, 0);
-    
-    });
-
+    //THEY ARE BOTH LOGGED BY THE COMMANDS
+    //THE MANUAL BANS ARE NOT LOGGED
 }
 
 

@@ -21,7 +21,13 @@ module.exports = {
 
         const amount = options.getInteger('amount');
         const target = options.getUser('target');
-
+        if(amount > 100)
+        {
+            const ed = new EmbedBuilder()
+                .setColor('Red')
+                .setDescription('Amount should be less or equal than 100!');
+            return await interaction.reply({embeds: [ed], emphemeral: true});
+        }
         const messages = await channel.messages.fetch({
             limit: amount + 1,
         });
