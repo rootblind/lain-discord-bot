@@ -9,7 +9,13 @@
 
 ## Key modules
 
+You can find them [here](https://github.com/rootblind/lain-discord-bot/tree/main/source/commands).
+
 - Moderation
+- Info
+- Miscellaneous
+- Premium members
+- Setup
 - More will be added soon
 
 
