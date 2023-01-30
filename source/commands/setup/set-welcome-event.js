@@ -42,8 +42,6 @@ module.exports = {
         const welcomeTitle = options.getString('welcome-message-title');
         const welcomeMessage = options.getString('welcome-message');
         const welcomeSwitch = options.getString('switch');
-        if(!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages))
-            interaction.reply({content:'Lacking SendMessages permission.', ephemeral: true});
         if(welcomeTitle.length > 255)
             {
                 const ed = new EmbedBuilder()

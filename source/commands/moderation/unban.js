@@ -22,7 +22,7 @@ module.exports = {
         const {channel, options} = interaction;
         const userId = options.getString('user-id');
         const embed = new EmbedBuilder()
-            .setDescription(`Successfully unbanned the user with id ${userId} .`)
+            .setDescription(`Successfully unbanned the user with ID: ${userId} .`)
             .setColor(0x5fb040)
             .setTimestamp();
         const errEmbed = new EmbedBuilder()
@@ -40,8 +40,15 @@ module.exports = {
 
         db.get(`SELECT * FROM prefChannelsScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
             if(err) console.error(err);
-            if(row === undefined) return;
-
+            if(row === undefined)
+            {
+                const critical = new EmbedBuilder()
+                    .setTitle('CRITICAL ERROR!')
+                    .setDescription('Use \`/server-setup\` or ask an admin to do, or some commands will not work!');
+                interaction.reply({embeds: [critical], ephemeral: true});
+                return;
+            }
+            if(!row.ModLogs) return;
             let channelLog = interaction.guild.channels.cache.get(row.ModLogs);
             const logEmbed = new EmbedBuilder()
                 .setColor(`Green`)
