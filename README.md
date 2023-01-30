@@ -46,7 +46,9 @@ Use Nodejs to run the bot
   node ./source/lain-main.js
 ```
 
-It is important to note that, as the bot Owner, you should run the /default-database command.
+It is important to note that, as the bot Owner, you should run the /default-database command before using it.
+
+Also Lain is set to work only if she has Administrator permissions. You can change that in [this file](https://github.com/rootblind/lain-discord-bot/blob/main/Events/interaction/interactionCreate.js).
 
 
 ## Get the latest Nodejs version from here:
