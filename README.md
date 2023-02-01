@@ -1,8 +1,9 @@
 
 # Lain
 
+ 
  Nodejs Discord bot for managing a server.
- This project is not finished.
+ This project is not ON GOING, you can raise **issues** if you wish for features or to contribute!
 
 
 ![Logo](https://i.ibb.co/xG8Nv30/Lain-Discord-Bot.png)
