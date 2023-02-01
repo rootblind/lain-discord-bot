@@ -82,7 +82,7 @@ module.exports = {
             );
             const categoryEmbed = new EmbedBuilder()
             .setTitle(`${formatString(directory)} commands`)
-            .setDescription(`A list of all the commands categoriez under ${directories}`)
+            .setDescription(`A list of all the commands categories under ${directories}`)
             .addFields(
                 category.commands.map((cmd) => {
                     return {

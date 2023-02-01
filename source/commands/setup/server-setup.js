@@ -14,7 +14,7 @@ module.exports = {
         db.get(`SELECT * FROM welcomeScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
             if(err) console.log(err);
             if(row === undefined)
-                db.run(`INSERT INTO welcomeScheme (Guild) VALUES (?)`, [interaction.guild.id], (err) => { if(err) console.error(err);});
+                db.run(`INSERT INTO welcomeScheme (Guild, Status) VALUES (?, ?)`, [interaction.guild.id, 'disable'], (err) => { if(err) console.error(err);});
         });
 
         db.get(`SELECT * FROM prefChannelsScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
