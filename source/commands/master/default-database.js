@@ -38,8 +38,6 @@ module.exports = {
                 console.error(err);
         });
 
-
-
         interaction.reply({content:'The default tables have been set in database.', ephemeral: true});
         db.close();
     }
