@@ -38,6 +38,11 @@ module.exports = {
                 console.error(err);
         });
 
+        sql = `CREATE TABLE IF NOT EXISTS rolesPanelScheme(ID INTEGER PRIMARY KEY, Guild Text, Role Text, Desc Text, UNIQUE(Role))`;
+        db.run(sql, [], (err) => {
+            if(err) console.error(err);
+        });
+
         interaction.reply({content:'The default tables have been set in database.', ephemeral: true});
         db.close();
     }
