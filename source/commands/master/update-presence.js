@@ -76,7 +76,7 @@ module.exports = {
             const activity = options.getString('activity');
             let delay = options.getNumber('delay');
             const switch_au = options.getString('activation');
-            let rawConfig = fs.readFileSync('./source/presence/presence-config.json');
+            let rawConfig = fs.readFileSync('./source/objects/presence-config.json');
             let config = JSON.parse(rawConfig);
             try{
                 switch(subCmd){
@@ -100,7 +100,7 @@ module.exports = {
                         config["status"] = switch_au;
                         if(delay > 0 && delay <= 24)
                             config["delay"] = Math.floor(delay) * 3600000;
-                        fs.writeFileSync('./source/presence/presence-config.json', JSON.stringify(config));
+                        fs.writeFileSync('./source/objects/presence-config.json', JSON.stringify(config));
                         break;
                 }
             }

@@ -5,7 +5,7 @@ const sqlite = require('sqlite3').verbose();
 const client_id = process.env.LAIN_CLIENT_ID;
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('add-role')
+        .setName('panel-add')
         .setDescription('Add a reaction role to the panel')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
         .addRoleOption(option =>
@@ -25,6 +25,11 @@ module.exports = {
             const role = options.getRole('role');
             const description = options.getString('description') || "No description";
             const responseEmbed = new EmbedBuilder();
+            if(description.length > 100)
+            {
+                responseEmbed.setColor('Red').setDescription('The description provided is too long! Try less than 100 characters.');
+                return interaction.reply({embeds: [responseEmbed], ephemeral: true});
+            }
             const db = new sqlite.Database('./source/lain-database.db');
             try{
                 const me = interaction.guild.members.cache.get(client_id);
