@@ -18,6 +18,7 @@ You can find them [here](https://github.com/rootblind/lain-discord-bot/tree/main
 - Miscellaneous
 - Premium members
 - Setup
+- Roles
 - More will be added soon
 
 
