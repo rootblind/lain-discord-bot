@@ -1,11 +1,11 @@
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require('discord.js');
-const { execute } = require('./add-role');
+const { execute } = require('./panel-add');
 
 const sqlite = require('sqlite3').verbose();
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('remove-role')
+        .setName('panel-remove')
         .setDescription('Remove role from the panel')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
         .addRoleOption(option =>

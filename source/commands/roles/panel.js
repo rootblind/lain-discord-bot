@@ -1,5 +1,4 @@
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ActionRowBuilder, StringSelectMenuBuilder} = require('discord.js');
-const { execute } = require('./add-role');
 
 const sqlite = require('sqlite3').verbose();
 
@@ -15,6 +14,16 @@ module.exports = {
             const db = new sqlite.Database('./source/lain-database.db', (err) => {if(err) console.error(err);});
             const embed = new EmbedBuilder();
             let promise;
+            
+            //this db.each checks if the role ids in the database are still valid. if an id is no longer a role of this server
+            //then it deletes the row.
+            db.each(`SELECT * FROM rolesPanelScheme WHERE Guild= ?`,[guildId], (err, row) => {
+                if(err) console.error(err);
+                let roleTest = interaction.guild.roles.cache.get(row.Role);
+                if(roleTest === undefined)
+                    db.run(`DELETE FROM rolesPanelScheme WHERE Role= ?`, [row.Role]);
+            });
+
             let getData = () => { return new Promise((resolve, reject) => {
                 db.serialize(() => {
                         db.all(`SELECT * FROM rolesPanelScheme WHERE Guild= ?`, [guildId], (err, rows) => {
@@ -38,7 +47,7 @@ module.exports = {
                 .setDescription('Pick your roles!');
             const options = promise.map(element => {
                 const role = interaction.guild.roles.cache.get(element.Role);
-
+                
                 return {
                     label: role.name,
                     value: role.id,

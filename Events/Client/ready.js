@@ -17,7 +17,7 @@ module.exports = {
 
         
         let botAuto;
-        let rawConfig = fs.readFileSync('./source/presence/presence-config.json');
+        let rawConfig = fs.readFileSync('./source/objects/presence-config.json');
         let presenceConfig = JSON.parse(rawConfig);
         //the bot might need to be restarted in order to read the new config
         botAuto = setInterval(() => {
@@ -26,7 +26,7 @@ module.exports = {
                     return;
                 }
                 let actList = ["Playing", "Listening", "Watching"];
-                let rawData = fs.readFileSync('./source/presence/presence-autoupdate.json');
+                let rawData = fs.readFileSync('./source/objects/presence-autoupdate.json');
                 let presence = JSON.parse(rawData);
                 let selectNum = randNum(4); // selecting the activity Playing, Listening or Watching
                 let decide = actList[randNum(selectNum)];

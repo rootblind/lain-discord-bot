@@ -43,6 +43,11 @@ module.exports = {
             if(err) console.error(err);
         });
 
+        sql = `CREATE TABLE IF NOT EXISTS colorPanelScheme(ID INTEGER PRIMARY KEY, Guild Text, Role Text, Defaults Text, UNIQUE(Role))`
+        db.run(sql, [], (err) => {
+            if(err) console.error(err);
+        });
+        
         interaction.reply({content:'The default tables have been set in database.', ephemeral: true});
         db.close();
     }
