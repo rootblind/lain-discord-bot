@@ -96,10 +96,6 @@ You can change the name of the variables, but make sure to make the change in co
 [GPL v3](https://github.com/rootblind/lain-discord-bot/blob/main/LICENSE)
 
 
-## 🔗 Links
-
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](www.linkedin.com/in/grecu-ionut-catalin)
-
 
 ## Ask for Support
 
