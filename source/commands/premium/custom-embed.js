@@ -2,6 +2,7 @@ const {Message, Client, SlashCommandBuilder, EmbedBuilder,PermissionFlagsBits, E
 
 const sqlite = require('sqlite3').verbose();
 
+const client_id = process.env.LAIN_CLIENT_ID;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -82,6 +83,15 @@ module.exports = {
         let imageLink = options.getString('image') || null;
         let footerIcon = options.getString("footer-icon") || null;
         let channel = options.getChannel('channel') || interaction.channel;
+        const me = interaction.guild.members.fetch(client_id);
+        if(interaction.member.permissionsIn(channel).has(PermissionFlagsBits.SendMessages))
+        {
+            return interaction.reply({content: 'You do not have SendMessages permission in that channel.', ephemeral: true});
+        }
+        if(me.permissionsIn(channel).has(PermissionFlagsBits.SendMessages))
+        {
+            return interaction.reply({content: 'I lack SendMessages permission in that channel!', ephemeral: true})
+        }
 
         db.get(`SELECT * FROM dedicatedRolesScheme WHERE Guild = ?`, [interaction.guild.id], (err, row) => {
             if(err) console.error(err);
