@@ -1,5 +1,6 @@
 
-# Lain
+# Lain(dropped)
+I am continuing my work at [justice-bot](https://github.com/rootblind/justice-bot)
 
  
  Nodejs Discord bot for managing a server.
